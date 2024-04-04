@@ -12,26 +12,26 @@ namespace GooseosWatermark
         public override string Prefix => "gwm";
         public override Version Version => new(1,0,0);
 
-        public PlayerHandler playerHandler { get; set; } = null!;
+        public EventHandler eventHandler { get; set; } = null!;
         public static Plugin Instance { get; set; } = null!;
 
-        private protected Harmony harmony = new("Gooseo's Watermark");
+        private protected Harmony Harmony = new("GooseosWatermark");
 
         public override void OnEnabled()
         {
             Instance = this;
-            playerHandler = new();
+            eventHandler = new();
 
-            harmony.PatchAll();
+            Harmony.PatchAll();
 
             base.OnEnabled();
         }
 
         public override void OnDisabled()
         {
-            harmony.UnpatchAll();
+            Harmony.UnpatchAll();
 
-            playerHandler = null!;
+            eventHandler = null!;
             Instance = null!;
             base.OnDisabled();
         }
