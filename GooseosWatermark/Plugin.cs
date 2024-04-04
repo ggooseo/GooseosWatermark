@@ -1,10 +1,11 @@
-﻿using Exiled.API.Features;
+﻿using Exiled.Events.EventArgs.Player;
+using Exiled.Events.Handlers;
 using HarmonyLib;
 using System;
 
 namespace GooseosWatermark
 {
-    public class Plugin : Plugin<Config>
+    public class Plugin : Exiled.API.Features.Plugin<Config>
     {
         public override string Name => "Gooseo's Watermark";
         public override string Author => "Gooseo";
@@ -12,7 +13,6 @@ namespace GooseosWatermark
         public override string Prefix => "gwm";
         public override Version Version => new(1,0,0);
 
-        public EventHandler eventHandler { get; set; } = null!;
         public static Plugin Instance { get; set; } = null!;
 
         private protected Harmony Harmony = new("GooseosWatermark");
@@ -20,7 +20,6 @@ namespace GooseosWatermark
         public override void OnEnabled()
         {
             Instance = this;
-            eventHandler = new();
 
             Harmony.PatchAll();
 
@@ -31,9 +30,9 @@ namespace GooseosWatermark
         {
             Harmony.UnpatchAll();
 
-            eventHandler = null!;
             Instance = null!;
             base.OnDisabled();
         }
+
     }
 }
