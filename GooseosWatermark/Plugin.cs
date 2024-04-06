@@ -12,6 +12,7 @@ namespace GooseosWatermark
 
         public override string Prefix => "gwm";
         public override Version Version => new(1,0,0);
+        public override Version RequiredExiledVersion => new(8,8,0);
 
         public static Plugin Instance { get; set; } = null!;
 

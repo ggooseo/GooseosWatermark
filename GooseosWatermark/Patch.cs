@@ -1,23 +1,19 @@
-﻿using Exiled.API.Features;
-using Exiled.Events.EventArgs.Player;
-using Exiled.Events.Handlers;
+﻿using Exiled.Events.EventArgs.Player;
 using HarmonyLib;
-using Player = Exiled.Events.Handlers.Player;
-using PlayerFeature = Exiled.API.Features.Player;
-
+using PlayerEvent = Exiled.Events.Handlers.Player;
+using Player = Exiled.API.Features.Player;
 
 namespace GooseosWatermark
 {
-    [HarmonyPatch(typeof(Player), nameof(Player.Joined), MethodType.Normal)]
+    [HarmonyPatch(typeof(PlayerEvent), nameof(PlayerEvent.Joined))]
 
     public class Patch
     {
-        private Config config = Plugin.Instance.Config;
+        private static Config config = Plugin.Instance.Config;
 
-        public void PostFix(JoinedEventArgs ev)
-        {
-            Log.Debug("fart");
-            ev.Player.ShowHint(config.WaterMarkMessage, 0);
+        public static void Postfix(Player player, JoinedEventArgs ev)
+        { 
+            player.ShowHint(config.WaterMarkMessage, 555);
         }
     }
 }
