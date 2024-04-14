@@ -8,17 +8,17 @@ namespace GooseosWatermark
 
         public EventHandler()
         {
-            PlayerEvent.Spawning += OnSpawning;
+            PlayerEvent.Spawned += Spawned;
         }
 
         ~EventHandler()
         {
-            PlayerEvent.Spawning -= OnSpawning;
+            PlayerEvent.Spawned -= Spawned;
         }
 
-        public void OnSpawning(SpawningEventArgs ev)
+        public void Spawned(SpawnedEventArgs ev)
         {
-            ev.Player.ShowHint(Plugin.Instance.Config.WaterMarkMessage, 99999);
+            ev.Player.ShowHint("test", 3);
         }
     }
 }

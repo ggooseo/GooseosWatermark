@@ -1,17 +1,15 @@
-﻿using Exiled.API.Features;
+﻿using Exiled.Events.EventArgs.Player;
 using HarmonyLib;
+using PlayerEvent = Exiled.Events.Handlers.Player;
 
 namespace GooseosWatermark
 {
-    [HarmonyPatch(typeof(Player), nameof(Player.ShowHint), typeof(string), typeof(float))]
+    [HarmonyPatch(typeof(PlayerEvent), nameof(PlayerEvent.OnSpawned))]
     internal static class Patch
     {
-        private static void Postfix(Player __instance, ref string message, float duration)
-        {
-            if (duration != 99999)
-                __instance.ShowHint(message, duration);
-            else
-                __instance.ShowHint(Plugin.Instance.Config.WaterMarkMessage, 99999);
+        private static void Postfix(SpawnedEventArgs ev)
+        {                
+            ev.Player.ShowHint(Plugin.Instance.Config.WaterMarkMessage, 99999);
         }
     }
 }
