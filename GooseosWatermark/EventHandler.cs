@@ -1,4 +1,7 @@
-﻿using Exiled.Events.EventArgs.Player;
+﻿using Exiled.API.Features;
+using Exiled.Events.EventArgs.Player;
+using MEC;
+using System.Collections.Generic;
 using PlayerEvent = Exiled.Events.Handlers.Player;
 
 namespace GooseosWatermark
@@ -8,17 +11,28 @@ namespace GooseosWatermark
 
         public EventHandler()
         {
-            PlayerEvent.Spawned += Spawned;
+            PlayerEvent.Joined += Joined;
         }
 
         ~EventHandler()
         {
-            PlayerEvent.Spawned -= Spawned;
+            PlayerEvent.Joined -= Joined;
         }
 
-        public void Spawned(SpawnedEventArgs ev)
+        public void Joined(JoinedEventArgs ev)
         {
-            ev.Player.ShowHint("test", 3);
+            Timing.RunCoroutine(SendHint(ev.Player));
+        }
+
+        private protected IEnumerator<float> SendHint(Player player)
+        {
+            for (; ; )
+            {
+                if (player.CurrentHint == null)
+                    player.ShowHint(Plugin.Instance.Config.WaterMarkMessage, 99999);
+
+                yield return Timing.WaitForSeconds(1);
+            }
         }
     }
 }
