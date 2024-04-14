@@ -1,7 +1,5 @@
-﻿using Player = Exiled.Events.Handlers.Player;
-using Exiled.Events.EventArgs.Player;
-using Exiled.Events.EventArgs.Map;
-using System.Linq;
+﻿using Exiled.Events.EventArgs.Player;
+using PlayerEvent = Exiled.Events.Handlers.Player;
 
 namespace GooseosWatermark
 {
@@ -10,16 +8,17 @@ namespace GooseosWatermark
 
         public EventHandler()
         {
-            Player.Verified += OnVerified;
+            PlayerEvent.Spawning += OnSpawning;
         }
 
-        ~EventHandler() {
-            Player.Verified -= OnVerified;
-        }
-
-        public void OnVerified(VerifiedEventArgs ev)
+        ~EventHandler()
         {
-            ev.Player.ShowHint(Plugin.Instance.Config.WaterMarkMessage, 999999);
+            PlayerEvent.Spawning -= OnSpawning;
+        }
+
+        public void OnSpawning(SpawningEventArgs ev)
+        {
+            ev.Player.ShowHint(Plugin.Instance.Config.WaterMarkMessage, 99999);
         }
     }
 }
