@@ -1,4 +1,7 @@
 ﻿using Exiled.API.Features;
+using RueI;
+using RueI.Displays;
+using RueI.Elements;
 using System;
 
 namespace GooseosWatermark
@@ -12,13 +15,14 @@ namespace GooseosWatermark
         public override Version Version => new(1,0,0);
         public override Version RequiredExiledVersion => new(8,8,0);
 
-        public static Plugin Instance { get; set; } = null!;
+        public static Plugin Instance { get; set; } = null;
 
         private protected EventHandler eventHandler;
 
         public override void OnEnabled()
         {
             Instance = this;
+            RueIMain.EnsureInit();
             eventHandler = new();
 
             base.OnEnabled();
@@ -26,8 +30,8 @@ namespace GooseosWatermark
 
         public override void OnDisabled()
         {
-            eventHandler = null!;
-            Instance = null!;
+            eventHandler = null;
+            Instance = null;
 
             base.OnDisabled();
         }

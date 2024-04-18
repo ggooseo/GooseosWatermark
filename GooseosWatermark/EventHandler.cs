@@ -1,7 +1,7 @@
-﻿using Exiled.API.Features;
-using Exiled.Events.EventArgs.Player;
+﻿using Exiled.Events.EventArgs.Player;
 using MEC;
-using System.Collections.Generic;
+using RueI.Displays;
+using RueI.Elements;
 using PlayerEvent = Exiled.Events.Handlers.Player;
 
 namespace GooseosWatermark
@@ -11,28 +11,29 @@ namespace GooseosWatermark
 
         public EventHandler()
         {
-            PlayerEvent.Joined += Joined;
+            PlayerEvent.Verified += Verified;
         }
 
         ~EventHandler()
         {
-            PlayerEvent.Joined -= Joined;
+            PlayerEvent.Verified -= Verified;
         }
 
-        public void Joined(JoinedEventArgs ev)
+        public void Verified(VerifiedEventArgs ev)
         {
-            Timing.RunCoroutine(SendHint(ev.Player));
-        }
+            Config config = Plugin.Instance.Config;
+            
+            DisplayCore core = DisplayCore.Get(ev.Player.ReferenceHub);
+            Display display = new(core);
 
-        private protected IEnumerator<float> SendHint(Player player)
-        {
-            for (; ; )
+            SetElement element = new(config.YPosition, config.WaterMarkMessage)
             {
-                if (player.CurrentHint == null)
-                    player.ShowHint(Plugin.Instance.Config.WaterMarkMessage, 99999);
-
-                yield return Timing.WaitForSeconds(1);
-            }
+                ZIndex = 10
+            };
+            
+            display.Elements.Add(element);
+            display.Update();
+            core.Update();
         }
     }
 }
